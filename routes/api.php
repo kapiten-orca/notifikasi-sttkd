@@ -19,8 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post("push-subscribe", function(Request $request) {
-    PushSubscription::create([
+ Route::post("push-subscribe", function(Request $request) {
+     PushSubscription::create([
         'data' => $request->getContent()
-    ]);
-});
+     ]);
+ });

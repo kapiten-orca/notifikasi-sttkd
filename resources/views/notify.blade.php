@@ -11,11 +11,12 @@
 <body class="bg-secondary">
     @foreach ($subscriptions as $sub)
         <form class="row p-2 m-3 shadow rounded bg-white" action="/admin/sendNotif/{{$sub->id}}" method="POST">
+            @csrf
             Sub #{{$sub->id}}
-            <input class="py-1 my-2" type="text" name="title" placeholder="title">
-            <input class="py-1 my-2" type="text" name="body" placeholder="body">
-            <input class="py-1 my-2" type="text" name="url" placeholder="url">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input class="py-1 my-2" type="text" name="title" placeholder="Judul">
+            <textarea name="body" id="" cols="30" rows="10"></textarea>
+            <input class="py-1 my-2" type="text" name="url" placeholder="Jumlah SPD">
+            
             <input class="btn btn-primary my-2" type="submit" value="Send">
         </form>
     @endforeach

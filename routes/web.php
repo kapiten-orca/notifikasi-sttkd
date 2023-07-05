@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\homeController;
+use App\Http\Controllers\NotifController;
 use App\Models\PushSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,26 +22,20 @@ use Minishlink\WebPush\WebPush;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get("/admin/notify", function () {
-    return view('notify', [
-        'subscriptions' => PushSubscription::all()
-    ]);
+Route::get('/data-dumy', function () {
+    return view('data-dumy');
 });
 
-Route::post("admin/sendNotif/{sub}", function (PushSubscription $sub, Request $request) {
+Route::get('/index', [homeController::class, 'index']);
 
-    $webPush = new WebPush([
-        "VAPID" => [
-            "publicKey" => "BC5zel9JoqeOY2yVTJjDhiE1IisJTVHq-_p4rxC3zd60gQSqXzra_7_m7B12axwI42tZIUXYGXhIJ-t5MolKjNY",
-            "privateKey" => "YpOYF6OwLXH8PDW24E4Eu_kk7uOuSyApvC0NJhYNwa4",
-            "subject" => "http://127.0.0.1"
-        ]
+Route::get('/admin/notify',[NotifController::class, 'admin']);
+Route::post('/data-dumy',[NotifController::class, 'storeDumy']);
+Route::get('/admin/webhookNotif',[NotifController::class, 'webhook']);
+Route::delete('/destroy',[NotifController::class, 'destroy']);
+Route::post("admin/sendNotif/{sub}",[NotifController::class, 'notif']);
+Route::get('/testapi',[NotifController::class, 'dataPtb']);
+Route::post('/admin/push-subscribe', function(Request $request) {
+    PushSubscription::create([
+        'data' => $request->getContent()
     ]);
-
-    $result = $webPush->sendOneNotification(
-        Subscription::create(json_decode($sub->data ,true)),
-        json_encode($request->input())
-    );
-    dd($result);
 });
